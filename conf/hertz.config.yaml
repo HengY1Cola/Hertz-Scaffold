@@ -1,0 +1,31 @@
+Develop:
+  ServicePort: 6789
+  Level: "dev"
+
+Product:
+  ServicePort: 6789
+  Level: "pro"
+
+MysqlDevelop:
+  MysqlUrl: "root:123456@tcp(127.0.0.1:3306)/test?charset=utf8&parseTime=true&loc=Asia%2FChongqing"
+  MaxOpenConn: 20
+  MaxIdleConn: 10
+  MaxConnLifeTime: 100
+
+MysqlProduct:
+  MysqlUrl: "root:123456@tcp(127.0.0.1:3306)/test?charset=utf8&parseTime=true&loc=Asia%2FChongqing"
+  MaxOpenConn: 20
+  MaxIdleConn: 10
+  MaxConnLiftTime: 100
+
+RedisDevelop:
+  ProxyList: ["127.0.0.1:6379"]
+  MaxActive: 100
+  MaxIdle: 100
+  DownGrade: false
+
+RedisProduct:
+  ProxyList: ["127.0.0.1:6379"]
+  MaxActive: 100
+  MaxIdle: 100
+  DownGrade: false
