@@ -5,13 +5,14 @@ go 1.17
 require (
 	github.com/cloudwego/hertz v0.1.0
 	github.com/golang-jwt/jwt v3.2.2+incompatible
-	github.com/henrylee2cn/goutil v0.0.0-20220704075712-42f2ec55fe8d
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/viper v1.12.0
 	gorm.io/driver/mysql v1.3.4
 	gorm.io/gorm v1.23.8
 )
+
+require github.com/henrylee2cn/goutil v0.0.0-20220704075712-42f2ec55fe8d // indirect
 
 require (
 	github.com/andeya/goutil v0.0.0-20220704075712-42f2ec55fe8d // indirect
