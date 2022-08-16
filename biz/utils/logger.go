@@ -23,7 +23,7 @@ func GetCtxLogger(c *app.RequestContext) Logger {
 
 	logger.SetLevel(GetInfoLevel()) // 设置日志级别
 	logger.SetReportCaller(false)   // 设置在输出日志中添加文件名和方法信息 默认关闭
-	logfile, _ := os.OpenFile(conf.AppConf.BaseInfo.LogAbsoluteDir+"/"+GetLogFileName(), os.O_CREATE|os.O_RDWR|os.O_APPEND, 0644)
+	logfile, _ := os.OpenFile(conf.AppConf.BaseInfo.LogAbsoluteDir+"/"+GetLogFileName(), os.O_CREATE|os.O_RDWR|os.O_APPEND, 0755)
 	logger.Out = logfile
 	return Logger{TempLogger: logger, Ctx: c}
 }
@@ -67,16 +67,4 @@ func GetInfoLevel() logrus.Level {
 	} else {
 		return logrus.InfoLevel
 	}
-}
-
-func InitGlobalLogger() {
-	GlobalLogger = logrus.New()
-	GlobalLogger.SetFormatter(&logrus.JSONFormatter{
-		TimestampFormat: "2006-01-02 15:04:05",
-	})
-
-	GlobalLogger.SetLevel(GetInfoLevel()) // 设置日志级别
-	GlobalLogger.SetReportCaller(false)   // 设置在输出日志中添加文件名和方法信息 默认关闭
-	logfile, _ := os.OpenFile(conf.AppConf.BaseInfo.LogAbsoluteDir+"/"+GetLogFileName(), os.O_CREATE|os.O_RDWR|os.O_APPEND, 0644)
-	GlobalLogger.Out = logfile
 }

@@ -4,6 +4,13 @@ import (
 	"fmt"
 )
 
+type ValidatorFun struct {
+	Name string
+	Func func(args ...interface{}) error
+}
+
+type ValidateFuncs []ValidatorFun
+
 func ValidatorTest() ValidatorFun {
 	return ValidatorFun{
 		Name: "test",

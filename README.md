@@ -14,7 +14,7 @@
 $ git clone https://github.com/HengY1Sky/Hertz-Scaffold
 $ cd Hertz-Scaffold
 $ chmod +x ./build.sh
-$ ./build && ./output/bootstrap_boe.sh # 开始体验
+$ ./build.sh && ./output/bootstrap_boe.sh # 开始体验
 ```
 
 ## 文件结构

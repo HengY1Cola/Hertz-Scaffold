@@ -57,12 +57,7 @@ const (
 	HertzConfigFile = "hertz.config"
 )
 
-func InitLoadConf() {
-	parseFlags()
-	parseConf()
-}
-
-func parseFlags() {
+func ParseFlags() {
 	AppConf = &AppConfig{}
 	confType, confRunDir := "", ""
 	flag.StringVar(&confType, "env", "", "pro or dev")
@@ -94,7 +89,7 @@ func usage() {
 	os.Exit(-1)
 }
 
-func parseConf() {
+func ParseConf() {
 	v := viper.New()
 	confFile := getConfigFile(HertzConfigFile)
 	v.SetConfigFile(confFile)

@@ -4,19 +4,20 @@ import (
 	"Hertz-Scaffold/biz/middleware"
 	"Hertz-Scaffold/biz/repository"
 	"Hertz-Scaffold/biz/utils"
-	"Hertz-Scaffold/biz/validate"
-	"Hertz-Scaffold/conf"
 	"Hertz-Scaffold/cron_job"
+	"time"
 )
 
-func init() {
-	conf.InitLoadConf()      // 加载配置文件
-	repository.InitMysqlDb() // Mysql链接池子
-	utils.InitGlobalLogger() // 全局Logger
-	validate.InitValidator() // 验证器自定义函数注册
-}
-
 func main() {
+	start := time.Now()
+	modules := []Module{
+		Conf,
+		Mysql,
+		Logger,
+		Validate,
+	}
+	InitModules(modules)
+	utils.GlobalLogger.Infof("########time: %s ", time.Since(start))
 	engine := InitRouter(
 		middleware.RequestDoTracerId(),     // 全局链路中间件
 		middleware.RecoveryMiddleware(),    // 最后捕获panic错误
