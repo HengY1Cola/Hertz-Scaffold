@@ -21,7 +21,7 @@ $ ./build.sh && ./output/bootstrap_boe.sh # 开始体验
 
 ```
 ├─biz # business
-│  ├─bo # request && reponse 
+│  ├─bo # request && reponse && Object
 │  ├─constant # 定义
 │  ├─dal
 │  ├─handler # 业务

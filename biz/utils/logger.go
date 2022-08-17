@@ -3,8 +3,10 @@ package utils
 import (
 	"Hertz-Scaffold/conf"
 	"github.com/cloudwego/hertz/pkg/app"
+	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/sirupsen/logrus"
-	"os"
+	"io"
+	"path/filepath"
 	"time"
 )
 
@@ -15,6 +17,13 @@ type Logger struct {
 
 var GlobalLogger *logrus.Logger
 
+const (
+	CtxLoggerName    = "CtxLogger"
+	GlobalLoggerName = "GlobalLogger"
+)
+
+var LoggerList = []string{CtxLoggerName, GlobalLoggerName}
+
 func GetCtxLogger(c *app.RequestContext) Logger {
 	logger := logrus.New()
 	logger.SetFormatter(&logrus.JSONFormatter{
@@ -23,8 +32,8 @@ func GetCtxLogger(c *app.RequestContext) Logger {
 
 	logger.SetLevel(GetInfoLevel()) // 设置日志级别
 	logger.SetReportCaller(false)   // 设置在输出日志中添加文件名和方法信息 默认关闭
-	logfile, _ := os.OpenFile(conf.AppConf.BaseInfo.LogAbsoluteDir+"/"+GetLogFileName(), os.O_CREATE|os.O_RDWR|os.O_APPEND, 0755)
-	logger.Out = logfile
+	writer, _ := DivisionWriter(CtxLoggerName)
+	logger.SetOutput(io.MultiWriter(writer))
 	return Logger{TempLogger: logger, Ctx: c}
 }
 
@@ -56,9 +65,8 @@ func GetTracerId(c *app.RequestContext) string {
 	return traceId
 }
 
-func GetLogFileName() string {
-	timeStr := time.Now().Format("01_02")
-	return timeStr + ".log"
+func GetLogFileName(name string) string {
+	return filepath.Join(conf.AppConf.LogAbsoluteDir, name+".log")
 }
 
 func GetInfoLevel() logrus.Level {
@@ -67,4 +75,14 @@ func GetInfoLevel() logrus.Level {
 	} else {
 		return logrus.InfoLevel
 	}
+}
+
+func DivisionWriter(name string) (*rotatelogs.RotateLogs, error) {
+	writer, err := rotatelogs.New(
+		GetLogFileName(name)+".%Y%m%d%H%M",
+		rotatelogs.WithLinkName(GetLogFileName(name)),
+		rotatelogs.WithMaxAge(time.Duration(72)*time.Hour),       // 保留最近3天的日志文件
+		rotatelogs.WithRotationTime(time.Duration(24)*time.Hour), // 每隔1天轮转一个新文件
+	)
+	return writer, err
 }

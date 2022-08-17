@@ -8,6 +8,7 @@ import (
 	"database/sql"
 	"github.com/cloudwego/hertz/pkg/app/server/binding"
 	"github.com/sirupsen/logrus"
+	"io"
 	"os"
 	"time"
 )
@@ -16,8 +17,8 @@ type Module string
 
 const (
 	Conf     Module = "Conf"     // 配置文件
-	Mysql    Module = "Mysql"    // 数据库
-	Logger   Module = "Logger"   // 日志
+	Mysql    Module = "Mysql"    // Mysql数据库
+	Logger   Module = "Logger"   // 全局日志
 	Validate Module = "Validate" // 验证器
 )
 
@@ -34,6 +35,7 @@ func InitModule(module Module) {
 	case Mysql:
 		initMysqlDb()
 	case Logger:
+		//initBaseLog() // 手动关闭 会自己创建
 		initGlobalLogger()
 	case Validate:
 		initValidator()
@@ -56,6 +58,16 @@ func initMysqlDb() {
 	repository.SqlDbPool = sqlDB
 }
 
+func initBaseLog() {
+	for _, v := range utils.LoggerList {
+		_, err := os.Open(utils.GetLogFileName(v))
+		if err != nil && os.IsNotExist(err) {
+			file, _ := os.Create(utils.GetLogFileName(v))
+			defer file.Close()
+		}
+	}
+}
+
 func initGlobalLogger() {
 	utils.GlobalLogger = logrus.New()
 	utils.GlobalLogger.SetFormatter(&logrus.JSONFormatter{
@@ -64,8 +76,11 @@ func initGlobalLogger() {
 
 	utils.GlobalLogger.SetLevel(utils.GetInfoLevel()) // 设置日志级别
 	utils.GlobalLogger.SetReportCaller(false)         // 设置在输出日志中添加文件名和方法信息 默认关闭
-	logfile, _ := os.OpenFile(conf.AppConf.BaseInfo.LogAbsoluteDir+"/"+utils.GetLogFileName(), os.O_CREATE|os.O_RDWR|os.O_APPEND, 0755)
-	utils.GlobalLogger.Out = logfile
+	writer, err := utils.DivisionWriter(utils.GlobalLoggerName)
+	if err != nil {
+		panic(err)
+	}
+	utils.GlobalLogger.SetOutput(io.MultiWriter(writer))
 }
 
 func initValidator() {
