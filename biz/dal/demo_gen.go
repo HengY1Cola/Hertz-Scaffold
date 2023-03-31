@@ -3,7 +3,6 @@ package dal
 import (
 	"Hertz-Scaffold/biz/model"
 	"Hertz-Scaffold/biz/utils"
-	"fmt"
 	"github.com/cloudwego/hertz/pkg/app"
 	"sync"
 )
@@ -28,14 +27,15 @@ func GetDemoDal() *DemoRuleDal {
 
 func (ins *DemoRuleDal) Find(c *app.RequestContext, id int) (*model.Demo, error) {
 	logger := utils.GetCtxLogger(c)
-	temp := &model.Demo{}
 	db, err := ins.GetTransaction(c)
 	if err != nil {
 		return nil, err
 	}
+
+	temp := &model.Demo{}
 	res := db.Table(model.Demo{}.TableName()).Where("id = ?", id).First(&temp)
 	if res.Error != nil {
-		logger.DoError(fmt.Sprintf("[DemoRuleDal] Find err: %v", res.Error))
+		logger.Error("[DemoRuleDal] Find err: %v", res.Error)
 		return temp, res.Error
 	}
 	return temp, nil

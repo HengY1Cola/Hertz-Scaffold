@@ -3,9 +3,7 @@ package middleware
 import (
 	"Hertz-Scaffold/biz/constant"
 	"Hertz-Scaffold/biz/utils"
-	"Hertz-Scaffold/conf"
 	"context"
-	"errors"
 	"fmt"
 	"runtime/debug"
 
@@ -19,14 +17,9 @@ func RecoveryMiddleware() app.HandlerFunc {
 				fmt.Println(err)
 				fmt.Println(string(debug.Stack()))
 				logger := utils.GetCtxLogger(c)
-				logger.DoError(fmt.Sprintf("error: %v; stack: %v", fmt.Sprint(err), string(debug.Stack())))
-				if conf.AppConf.FlagConfig.Type != "dev" {
-					utils.ResponseError(c, constant.SysErrCode, errors.New("内部错误"))
-					return
-				} else {
-					utils.ResponseError(c, constant.SysErrCode, errors.New(fmt.Sprint(err)))
-					return
-				}
+				logger.Error("error: %v; stack: %v", fmt.Sprint(err), string(debug.Stack()))
+				utils.ResponseError(c, constant.ErrServerError, fmt.Errorf("%v", err))
+				return
 			}
 		}()
 		c.Next(ctx)

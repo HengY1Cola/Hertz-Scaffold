@@ -35,8 +35,10 @@ type YamlConfig struct {
 }
 
 type HertzBase struct {
-	ServicePort int
-	Level       string
+	ServicePort                int
+	Level                      string
+	WithHandleMethodNotAllowed bool
+	Domain                     string
 }
 
 type MysqlBase struct {
@@ -77,6 +79,19 @@ func ParseFlags() {
 	}
 	if AppConf.FlagConfig.Type != "dev" {
 		AppConf.FlagConfig.Type = "pro"
+	}
+	AppConf.BaseInfo = BaseInfo{
+		ConfAbsoluteDir: filepath.Join(AppConf.FlagConfig.RunDir, "conf"),
+		LogAbsoluteDir:  filepath.Join(AppConf.FlagConfig.RunDir, "log"),
+	}
+}
+
+func ParseTest() {
+	AppConf = &AppConfig{}
+	confType, confRunDir := "dev", "../../" // 根据工作目录来制定的
+	AppConf.FlagConfig = FlagConfig{
+		RunDir: confRunDir,
+		Type:   confType,
 	}
 	AppConf.BaseInfo = BaseInfo{
 		ConfAbsoluteDir: filepath.Join(AppConf.FlagConfig.RunDir, "conf"),
@@ -130,10 +145,18 @@ func (a *AppConfig) GetMysqlInfo() MysqlBase {
 	}
 }
 
-func (a *AppConfig) RedisInfo() RedisBase {
+func (a *AppConfig) GetRedisInfo() RedisBase {
 	if a.FlagConfig.Type == "dev" {
 		return a.YamlConfig.RedisDevelop
 	} else {
 		return a.YamlConfig.RedisProduct
+	}
+}
+
+func (a *AppConfig) GetDomainInfo() string {
+	if a.FlagConfig.Type == "dev" {
+		return a.YamlConfig.Develop.Domain
+	} else {
+		return a.YamlConfig.Product.Domain
 	}
 }

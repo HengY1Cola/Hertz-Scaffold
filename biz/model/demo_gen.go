@@ -1,6 +1,7 @@
 package model
 
 type Demo struct {
+	CommonBase
 	ID          uint64 `gorm:"column:id"`
 	UserID      string `gorm:"column:user_id"`
 	CreatedAt   int    `gorm:"column:created_at"`

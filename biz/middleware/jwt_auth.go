@@ -18,8 +18,8 @@ func JwtAuthMiddleware() app.HandlerFunc {
 		headerAuth := string(c.GetHeader("Authorization"))
 		authArray := strings.Split(headerAuth, " ")
 		if len(authArray) != 2 {
-			logger.DoError("[JwtAuthMiddleware] authArray length is not 2")
-			utils.ResponseError(c, con.MiddleWareErrCode, errors.New("非法操作"))
+			logger.Error("[JwtAuthMiddleware] authArray length is not 2")
+			utils.ResponseError(c, con.ErrJwtError, errors.New("非法操作"))
 			c.Abort()
 			return
 		}
@@ -27,8 +27,8 @@ func JwtAuthMiddleware() app.HandlerFunc {
 		var jwtStruct utils.JwtStruct
 		jwtStruct, err := jwtStruct.JwtDecode(authArray[1])
 		if err != nil {
-			logger.DoError(fmt.Sprintf("[JwtAuthMiddleware] JwtDecode err %v", err.Error()))
-			utils.ResponseError(c, con.MiddleWareErrCode, errors.New("非法操作"))
+			logger.Error(fmt.Sprintf("[JwtAuthMiddleware] JwtDecode err %v", err.Error()))
+			utils.ResponseError(c, con.ErrJwtError, errors.New("非法操作"))
 			c.Abort()
 			return
 		}

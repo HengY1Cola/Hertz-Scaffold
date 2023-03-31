@@ -1,10 +1,14 @@
 Develop:
   ServicePort: 6789
   Level: "dev"
+  WithHandleMethodNotAllowed: true
+  Domain: "api-boe.demo.net"
 
 Product:
-  ServicePort: 6789
+  ServicePort: 6790
   Level: "pro"
+  WithHandleMethodNotAllowed: true
+  Domain: "api.demo.net"
 
 MysqlDevelop:
   MysqlUrl: "root:123456@tcp(127.0.0.1:3306)/test?charset=utf8&parseTime=true&loc=Asia%2FChongqing"

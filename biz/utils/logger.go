@@ -2,6 +2,7 @@ package utils
 
 import (
 	"Hertz-Scaffold/conf"
+	"fmt"
 	"github.com/cloudwego/hertz/pkg/app"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/sirupsen/logrus"
@@ -37,22 +38,16 @@ func GetCtxLogger(c *app.RequestContext) Logger {
 	return Logger{TempLogger: logger, Ctx: c}
 }
 
-func (l *Logger) DoInfo(info string) {
+func (l *Logger) Info(format string, a ...interface{}) {
 	l.TempLogger.WithFields(logrus.Fields{
 		"tracer_id": GetTracerId(l.Ctx),
-	}).Info(info)
+	}).Info(fmt.Sprintf(format, a))
 }
 
-func (l *Logger) DoError(err string) {
+func (l *Logger) Error(format string, a ...interface{}) {
 	l.TempLogger.WithFields(logrus.Fields{
 		"tracer_id": GetTracerId(l.Ctx),
-	}).Error(err)
-}
-
-func (l *Logger) DoDebug(err string) {
-	l.TempLogger.WithFields(logrus.Fields{
-		"tracer_id": GetTracerId(l.Ctx),
-	}).Debug(err)
+	}).Error(fmt.Errorf(format, a))
 }
 
 func GetTracerId(c *app.RequestContext) string {
