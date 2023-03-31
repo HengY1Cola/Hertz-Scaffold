@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	common.Register(constant.DefaultAPIModule, constant.MethodGet, "/ping", Ping)
+	common.Register(constant.DefaultAPIModule, constant.MethodGet, "/ping", common.WithAdminCheck(Ping))
 	common.Register(constant.DefaultAPIModule, constant.MethodGet, "/get_with_bind/:info", GetBinding)
 	common.Register(constant.DefaultAPIModule, constant.MethodGet, "/get_with_query", GetQuery)
 	common.Register(constant.DefaultAPIModule, constant.MethodPost, "/post_with_bind", PostJsonBinding)
