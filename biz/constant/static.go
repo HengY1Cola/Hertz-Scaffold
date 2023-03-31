@@ -7,3 +7,23 @@ const (
 	Trading
 	TradeOver
 )
+
+const (
+	DefaultAPIModule = "defaultAPI"
+	DevOpsAPIModule  = "devOpsAPI"
+	AdminApIModel    = "adminAPI"
+
+	DefaultURLPrefix = "/api"
+	DevOpsURLPrefix  = "/api-dev"
+	AdminURLPrefix   = "/api-admin"
+)
+
+const (
+	MethodGet     = "GET"
+	MethodHead    = "HEAD"
+	MethodPost    = "POST"
+	MethodPut     = "PUT"
+	MethodPatch   = "PATCH" // RFC 5789
+	MethodDelete  = "DELETE"
+	MethodOptions = "OPTIONS"
+)

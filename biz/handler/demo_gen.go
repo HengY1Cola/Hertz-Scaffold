@@ -7,24 +7,19 @@ import (
 	"Hertz-Scaffold/biz/utils/common"
 	"context"
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/route"
 	"strconv"
 	"time"
 )
 
-type DemoController struct {
-}
-
-func DemoRegister(group *route.RouterGroup) {
-	demoController := &DemoController{}
-	group.GET("/ping", demoController.Ping)
-	group.GET("/get_with_bind/:info", demoController.GetBinding)
-	group.GET("/get_with_query", demoController.GetQuery)
-	group.POST("/post_with_bind", demoController.PostJsonBinding)
+func init() {
+	common.Register(constant.DefaultAPIModule, constant.MethodGet, "/ping", Ping)
+	common.Register(constant.DefaultAPIModule, constant.MethodGet, "/get_with_bind/:info", GetBinding)
+	common.Register(constant.DefaultAPIModule, constant.MethodGet, "/get_with_query", GetQuery)
+	common.Register(constant.DefaultAPIModule, constant.MethodPost, "/post_with_bind", PostJsonBinding)
 }
 
 // Ping 最基础的Get方法
-func (demo *DemoController) Ping(ctx context.Context, c *app.RequestContext) {
+func Ping(ctx context.Context, c *app.RequestContext) {
 	logger := common.GetCtxLogger(c)
 	logger.Info("[Ping] Return Pong Success %d", time.Now().Unix())
 	common.ResponseSuccess(c, bo.BaseMsgAndFlagResponse{
@@ -34,7 +29,7 @@ func (demo *DemoController) Ping(ctx context.Context, c *app.RequestContext) {
 }
 
 // GetBinding 使用GET方法在URL上进行绑定
-func (demo *DemoController) GetBinding(ctx context.Context, c *app.RequestContext) {
+func GetBinding(ctx context.Context, c *app.RequestContext) {
 	request := bo.DetailInfo2GetRequest{}
 	logger := common.GetCtxLogger(c)
 	err := c.BindAndValidate(&request)
@@ -48,7 +43,7 @@ func (demo *DemoController) GetBinding(ctx context.Context, c *app.RequestContex
 }
 
 // GetQuery 使用GET方法在URL上?id=
-func (demo *DemoController) GetQuery(ctx context.Context, c *app.RequestContext) {
+func GetQuery(ctx context.Context, c *app.RequestContext) {
 	request := bo.DemoQueryRequest{}
 	logger := common.GetCtxLogger(c)
 	err := c.BindAndValidate(&request)
@@ -68,7 +63,7 @@ func (demo *DemoController) GetQuery(ctx context.Context, c *app.RequestContext)
 }
 
 // PostJsonBinding 使用Post进行绑定
-func (demo *DemoController) PostJsonBinding(ctx context.Context, c *app.RequestContext) {
+func PostJsonBinding(ctx context.Context, c *app.RequestContext) {
 	request := bo.DemoRequest{}
 	logger := common.GetCtxLogger(c)
 	err := c.BindAndValidate(&request)

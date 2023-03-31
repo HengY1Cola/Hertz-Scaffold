@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "Hertz-Scaffold/biz/handler"
 	"Hertz-Scaffold/biz/middleware"
 	"Hertz-Scaffold/biz/repository"
 	"Hertz-Scaffold/biz/utils/common"
