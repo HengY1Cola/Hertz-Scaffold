@@ -41,13 +41,13 @@ func GetCtxLogger(c *app.RequestContext) Logger {
 func (l *Logger) Info(format string, a ...interface{}) {
 	l.TempLogger.WithFields(logrus.Fields{
 		"tracer_id": GetTracerId(l.Ctx),
-	}).Info(fmt.Sprintf(format, a))
+	}).Info(fmt.Sprintf(format, a...))
 }
 
 func (l *Logger) Error(format string, a ...interface{}) {
 	l.TempLogger.WithFields(logrus.Fields{
 		"tracer_id": GetTracerId(l.Ctx),
-	}).Error(fmt.Errorf(format, a))
+	}).Error(fmt.Errorf(format, a...))
 }
 
 func GetTracerId(c *app.RequestContext) string {
