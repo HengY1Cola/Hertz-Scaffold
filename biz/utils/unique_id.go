@@ -1,25 +1,21 @@
 package utils
 
 import (
-	"fmt"
-	"math/rand"
+	"github.com/google/uuid"
 	"strconv"
-	"time"
 )
 
-func GetTimeTick64() int64 {
-	return time.Now().UnixNano() / 1e6
+func generateUniqueString(n int) string {
+	if n > 36 {
+		n = 36
+	}
+	uniqueString := uuid.New().String()
+	uniqueString = uniqueString[:n]
+	return uniqueString
 }
 
-func GetFormatTime(time time.Time) string {
-	return time.Format("0102")
-}
-
-// GenerateCode 用于单机房生成唯一Id
-func GenerateCode() int {
-	date := GetFormatTime(time.Now())
-	r := rand.Intn(1000)
-	code := fmt.Sprintf("%s%d%03d", date, GetTimeTick64(), r)
-	randomId, _ := strconv.Atoi(code)
-	return randomId
+func generateUniqueInt(n int) int {
+	uniqueString := generateUniqueString(n)
+	uniqueInt, _ := strconv.Atoi(uniqueString)
+	return uniqueInt
 }
