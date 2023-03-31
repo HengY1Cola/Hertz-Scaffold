@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"Hertz-Scaffold/biz/utils"
+	"Hertz-Scaffold/biz/utils/common"
 	"context"
 	"encoding/json"
 	"time"
@@ -11,7 +11,7 @@ import (
 )
 
 func RequestInLog(c *app.RequestContext) {
-	traceContext := utils.NewTrace()
+	traceContext := common.NewTrace()
 	c.Set("startExecTime", time.Now())
 	c.Set("trace", traceContext)
 }
@@ -20,8 +20,8 @@ func RequestDoTracerId() app.HandlerFunc {
 	return func(ctx context.Context, c *app.RequestContext) {
 		RequestInLog(c)
 		info := getRequestInfo(c)
-		utils.GlobalLogger.WithFields(logrus.Fields{
-			"tracer_id": utils.GetTracerId(c),
+		common.GlobalLogger.WithFields(logrus.Fields{
+			"tracer_id": common.GetTracerId(c),
 		}).Info(info)
 		c.Next(ctx)
 	}

@@ -2,7 +2,7 @@ package dal
 
 import (
 	"Hertz-Scaffold/biz/model"
-	"Hertz-Scaffold/biz/utils"
+	"Hertz-Scaffold/biz/utils/common"
 	"github.com/cloudwego/hertz/pkg/app"
 	"sync"
 )
@@ -26,7 +26,7 @@ func GetDemoDal() *DemoRuleDal {
 // 主要定义一些基础的方法,给Service提供，当然也可以直接使用
 
 func (ins *DemoRuleDal) Find(c *app.RequestContext, id int) (*model.Demo, error) {
-	logger := utils.GetCtxLogger(c)
+	logger := common.GetCtxLogger(c)
 	db, err := ins.GetTransaction(c)
 	if err != nil {
 		return nil, err

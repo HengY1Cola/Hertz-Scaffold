@@ -8,15 +8,20 @@ require (
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.8.1
+	github.com/smartystreets/goconvey v1.7.2
 	github.com/spf13/viper v1.12.0
+	golang.org/x/crypto v0.0.0-20220411220226-7b82a4e95df4
 	gorm.io/driver/mysql v1.3.4
 	gorm.io/gorm v1.23.8
 )
 
 require (
+	github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1 // indirect
 	github.com/henrylee2cn/goutil v0.0.0-20220704075712-42f2ec55fe8d // indirect
 	github.com/jonboulle/clockwork v0.3.0 // indirect
+	github.com/jtolds/gls v4.20.0+incompatible // indirect
 	github.com/lestrrat-go/strftime v1.0.6 // indirect
+	github.com/smartystreets/assertions v1.2.0 // indirect
 )
 
 require (
@@ -27,7 +32,6 @@ require (
 	github.com/chenzhuoyu/base64x v0.0.0-20211019084208-fb5309c8db06 // indirect
 	github.com/cloudwego/netpoll v0.2.4 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
-	github.com/garyburd/redigo v1.6.3
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect

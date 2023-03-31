@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"Hertz-Scaffold/biz/constant"
-	"Hertz-Scaffold/biz/utils"
+	"Hertz-Scaffold/biz/utils/common"
 	"context"
 	"fmt"
 	"runtime/debug"
@@ -16,9 +16,9 @@ func RecoveryMiddleware() app.HandlerFunc {
 			if err := recover(); err != nil {
 				fmt.Println(err)
 				fmt.Println(string(debug.Stack()))
-				logger := utils.GetCtxLogger(c)
+				logger := common.GetCtxLogger(c)
 				logger.Error("error: %v; stack: %v", fmt.Sprint(err), string(debug.Stack()))
-				utils.ResponseError(c, constant.ErrServerError, fmt.Errorf("%v", err))
+				common.ResponseError(c, constant.ErrServerError, fmt.Errorf("%v", err))
 				return
 			}
 		}()

@@ -3,7 +3,7 @@ package dal
 import (
 	"Hertz-Scaffold/biz/model"
 	"Hertz-Scaffold/biz/repository"
-	"Hertz-Scaffold/biz/utils"
+	"Hertz-Scaffold/biz/utils/common"
 	"fmt"
 	"github.com/cloudwego/hertz/pkg/app"
 	"gorm.io/gorm"
@@ -16,7 +16,7 @@ type CommonDAL struct {
 const TransactionDbInstance string = "TransactionDbInstance"
 
 func (ins *CommonDAL) GetBaseTransaction(c *app.RequestContext) (*gorm.DB, error) {
-	logger := utils.GetCtxLogger(c)
+	logger := common.GetCtxLogger(c)
 	db, err := repository.GetGormDb()
 	if err != nil {
 		logger.Error("[GetBaseTransaction] GetGormDb err: %v", err)
@@ -34,7 +34,7 @@ func (ins *CommonDAL) GetTransaction(c *app.RequestContext) (*gorm.DB, error) {
 }
 
 func (ins *CommonDAL) GetBaseTransactionWithCtx(c *app.RequestContext) (*app.RequestContext, error) {
-	logger := utils.GetCtxLogger(c)
+	logger := common.GetCtxLogger(c)
 	_, ok := c.Get(TransactionDbInstance)
 	if !ok {
 		db, err := repository.GetGormDb()
