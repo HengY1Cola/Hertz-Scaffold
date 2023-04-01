@@ -8,7 +8,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
-type Response struct {
+type ErrorResponse struct {
 	ErrorCode con.ResponseCodeType `json:"errno"`
 	ErrorMsg  string               `json:"err_msg"`
 	Data      interface{}          `json:"data"`
@@ -16,9 +16,16 @@ type Response struct {
 	DebugMsg  string               `json:"debug_msg"`
 }
 
+type SuccessResponse struct {
+	ErrorCode con.ResponseCodeType `json:"errno"`
+	ErrorMsg  string               `json:"err_msg"`
+	Data      interface{}          `json:"data"`
+	Success   bool                 `json:"success"`
+}
+
 func ResponseError(c *app.RequestContext, response con.ErrorResponse, debugErr error) {
 	c.Header("tracer_id", GetTracerId(c))
-	resp := &Response{
+	resp := &ErrorResponse{
 		ErrorCode: response.ErrCode,
 		ErrorMsg:  response.ErrServerError.CN,
 		Data:      nil,
@@ -35,7 +42,7 @@ func ResponseError(c *app.RequestContext, response con.ErrorResponse, debugErr e
 
 func ResponseSuccess(c *app.RequestContext, data interface{}) {
 	c.Header("tracer_id", GetTracerId(c))
-	resp := &Response{
+	resp := &SuccessResponse{
 		ErrorCode: con.ErrSuccess.ErrCode,
 		ErrorMsg:  "",
 		Data:      data,
