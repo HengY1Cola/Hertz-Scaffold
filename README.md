@@ -10,25 +10,26 @@
 
 ## 如何快速开始
 > 前置条件：已经配置好了Git与Go相关环境
-```bash
-$ git clone https://github.com/HengY1Sky/Hertz-Scaffold
-$ cd Hertz-Scaffold
-$ chmod +x ./build.sh
-$ ./build.sh && ./output/bootstrap_boe.sh # 开始体验
-```
+ 
+在Goland中，在main.go文件下点击 ▶ 符号
+
+第一次会提醒你缺少参数，然后右上角点击配置编辑
+
+在程序实参的地方填入 -env="dev" -run_dir="." 即可
+
 
 ## 文件结构
 
 ```
 ├─biz # business
-│  ├─bo # request && reponse && Object
+│  ├─bo # Object
 │  ├─constant # 定义
-│  ├─dal
-│  ├─handler # 业务
+│  ├─dal # 查询
+│  ├─handler # 接口定义
 │  ├─middleware # 中间件 
 │  ├─model # 模型
 │  ├─repository # 数据库
-│  ├─service
+│  ├─service # 业务逻辑
 │  ├─utils # 仓库
 │  └─validate # 验证器
 ├─conf # 配置文件
@@ -37,12 +38,37 @@ $ ./build.sh && ./output/bootstrap_boe.sh # 开始体验
 
 ## 实现功能
 
-1. 分组路由文件上的封装，按照统一格式写就好了
-2. 中间件独立出来了，直接在对应的路由进行注册就好了
-3. Binding的自定义校验Validator
-4. Success与Error返回的统一格式
-5. Logger的追踪与全局的实现
-6. 配置文件的读取以及运用
+1. 中间件注入，分引擎再定制化中间件，方法前还可以自定义前置方法
+2. Binding的自定义校验Validator
+3. Success与Error返回的统一格式
+4. Logger的追踪与全局的实现
+5. 配置文件的读取以及运用
+6. 常用工具封装
+7. 测试环境Init直接开写
+8. Service、dal、model的常用Common
+
+## Github工作流部署
+
+工作流文件我已经写在了main.yml中了 说一下怎么配置
+1. REMOTE_HOST 你的服务器IP
+2. REMOTE_PORT 一般为22 ssh登陆
+3. REMOTE_USER ssh登陆用户名
+4. REMOTE_PASSWORD ssh登陆密码
+5. REMOTE_PATH 你要放在服务器的文件路径 如/home/ubuntu/output/
+6. STEP1: xxx_bin为你的编译后的名称
+   ```bash
+    if  [ -d  "/home/ubuntu/output/"  ]; then
+    rm -r /home/ubuntu/output
+    else
+    echo  "文件夹不存在"
+    fi
+    pid=`ps -ef | grep xxx_bin | grep -v grep | awk '{print $2}'`
+    kill -9 $pid
+    ```
+7. STEP2:
+   ```bash
+   cd /home/ubuntu/output && ./bootstrap_boe.sh
+   ```
 
 ## 相关链接
 

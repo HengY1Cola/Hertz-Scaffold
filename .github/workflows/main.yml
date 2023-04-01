@@ -1,0 +1,49 @@
+name: Go Build Layout
+
+on:
+  push:
+    branches: [ "build_main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: 🔨 Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.17
+        
+    - name: 🚀 Run Shell
+      run: ./build.sh
+      
+    - name: 😊 Stop and Remove
+      uses: appleboy/ssh-action@master 
+      with:
+        host: ${{ secrets.REMOTE_HOST }}
+        port: ${{ secrets.REMOTE_PORT }}
+        username: ${{ secrets.REMOTE_USER }}
+        password: ${{ secrets.REMOTE_PASSWORD }}
+        script: ${{ secrets.STEP1 }}
+          
+    - name: 🔔 Copy file
+      uses: appleboy/scp-action@master
+      with:
+        source: "./output/"
+        target: ${{ secrets.REMOTE_PATH }}
+        host: ${{ secrets.REMOTE_HOST }}
+        port: ${{ secrets.REMOTE_PORT }}
+        username: ${{ secrets.REMOTE_USER }}
+        password: ${{ secrets.REMOTE_PASSWORD }}
+        
+    - name: 🔚 Run
+      uses: appleboy/ssh-action@master 
+      with:
+        host: ${{ secrets.REMOTE_HOST }}
+        port: ${{ secrets.REMOTE_PORT }}
+        username: ${{ secrets.REMOTE_USER }}
+        password: ${{ secrets.REMOTE_PASSWORD }}
+        script: ${{ secrets.STEP2 }} 
+        
