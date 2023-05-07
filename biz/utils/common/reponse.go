@@ -5,6 +5,7 @@ import (
 	"Hertz-Scaffold/conf"
 	"encoding/json"
 	"fmt"
+
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -37,7 +38,7 @@ func ResponseError(c *app.RequestContext, response con.ErrorResponse, debugErr e
 	c.JSON(response.HttpCode, resp)
 	res, _ := json.Marshal(resp)
 	c.Set("response", string(res))
-	c.AbortWithError(int(response.ErrCode), debugErr)
+	c.AbortWithError(int(response.HttpCode), debugErr)
 }
 
 func ResponseSuccess(c *app.RequestContext, data interface{}) {
